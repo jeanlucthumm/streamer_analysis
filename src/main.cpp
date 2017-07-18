@@ -67,7 +67,6 @@ void findCircle() {
     return;
 }
 
-
 int main(int argc, char **argv) {
     if (argc != 2) {
         return EXIT_FAILURE;
@@ -75,6 +74,7 @@ int main(int argc, char **argv) {
 
     path data_path{argv[1]};
 
+    // validate directory
     try {
         if (!exists(data_path) || !is_directory(data_path)) {
             cout << "invalid data path: " << data_path << endl;
@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    directory_iterator begin(data_path), end;
+    directory_iterator begin{data_path}, end;
     vector<directory_entry> entries{begin, end};
 
     for (auto &entry : entries) {
