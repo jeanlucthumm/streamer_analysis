@@ -9,6 +9,7 @@
 #include <map>
 #include <boost/filesystem/path.hpp>
 #include <opencv2/core/types.hpp>
+#include "ImageData.h"
 
 class Prompter {
 public:
@@ -24,6 +25,8 @@ private:
     friend void mouse_callback(int event, int x, int y, int flag, void *param);
 
     std::map<std::string, std::vector<double>> table;
+
+    ImageData current_image_data;
 };
 
 

@@ -13,9 +13,13 @@ using namespace cv;
 
 void mouse_callback(int event, int x, int y, int flag, void *param) {
     Prompter *prompter = (Prompter *) param;
+    ImageData &data = prompter->current_image_data;
 
     if (event == EVENT_MOUSEMOVE) {
-        cout << "(" << x << ", " << y << ")" << endl; // DEBUG
+        Point mouse_point{x, y};
+        Mat matrix = data.matrix.clone(); // if bigger pictures, this is a huge bottleneck
+        line(matrix, data.center, mouse_point, Scalar{255, 0, 0}, 1, LINE_AA);
+        imshow(data.window_title, matrix);
     }
 }
 
@@ -34,10 +38,14 @@ void Prompter::prompt(const boost::filesystem::path &image_path) {
     }
     circle(image, center, 3, Scalar(0, 255, 0), -1); // display dot at center
 
-    namedWindow("example");
-    setMouseCallback("example", mouse_callback, this);
-    imshow("example", image);
+    current_image_data.path = image_path.string();
+    current_image_data.matrix = image;
+    current_image_data.center = center;
+    current_image_data.window_title = "Prompt";
 
+    namedWindow(current_image_data.window_title);
+    setMouseCallback(current_image_data.window_title, mouse_callback, this);
+    imshow(current_image_data.window_title, image);
 
     waitKey(0);
 }
@@ -55,7 +63,7 @@ cv::Point Prompter::calculate_center(cv::Mat &image, bool is_modeled) {
     vector<Vec3f> circles;
 
     HoughCircles(gray, circles, HOUGH_GRADIENT, 1, gray.rows / 8,
-                 200, 50, 0, 0);
+                 120, 50, 0, 0);
 
     if (circles.size() == 0) {
         return Point{-1, -1}; // impossible point
