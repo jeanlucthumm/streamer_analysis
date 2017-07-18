@@ -20,6 +20,9 @@ void mouse_callback(int event, int x, int y, int flag, void *param) {
         Mat matrix = data.matrix.clone(); // if bigger pictures, this is a huge bottleneck
         line(matrix, data.center, mouse_point, Scalar{255, 0, 0}, 1, LINE_AA);
         imshow(data.window_title, matrix);
+    } else if (event == EVENT_LBUTTONUP) {
+        Point mouse_point{x, y};
+        data.streamer_clicks.push_back(mouse_point);
     }
 }
 
