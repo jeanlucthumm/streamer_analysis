@@ -42,12 +42,13 @@ void Prompter::prompt(const boost::filesystem::path &image_path) {
     current_image_data.matrix = image;
     current_image_data.center = center;
     current_image_data.window_title = "Prompt";
+    current_image_data.streamer_clicks.clear();
 
     namedWindow(current_image_data.window_title);
     setMouseCallback(current_image_data.window_title, mouse_callback, this);
     imshow(current_image_data.window_title, image);
 
-    waitKey(0);
+    while ((char) waitKey(0) != ' ') {}
 }
 
 const std::map<std::string, std::vector<double>> &Prompter::get_table() {

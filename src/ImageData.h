@@ -15,6 +15,7 @@ public:
     std::string window_title;
     cv::Mat matrix;
     cv::Point center;
+    std::vector<cv::Point> streamer_clicks;
 };
 
 
