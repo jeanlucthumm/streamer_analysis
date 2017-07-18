@@ -64,5 +64,6 @@ Temporary Items
 .idea
 cmake-build-debug
 data/gif
+data/testing
 
 
