@@ -8,10 +8,11 @@
 
 #include <string>
 #include <opencv2/core/mat.hpp>
+#include <boost/filesystem/path.hpp>
 
 class ImageData {
 public:
-    std::string path;
+    boost::filesystem::path image_path;
     std::string window_title;
     cv::Mat matrix;
     cv::Point center;

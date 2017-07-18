@@ -22,6 +22,8 @@ public:
 private:
     cv::Point calculate_center(cv::Mat &image, bool is_modeled);
 
+    double calculate_angle(cv::Point point, cv::Point center);
+
     friend void mouse_callback(int event, int x, int y, int flag, void *param);
 
     std::map<std::string, std::vector<double>> table;

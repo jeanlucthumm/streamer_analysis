@@ -51,7 +51,7 @@ void Prompter::prompt(const boost::filesystem::path &image_path) {
     }
     circle(image, center, 3, Scalar(0, 255, 0), -1); // display dot at center
 
-    current_image_data.path = image_path.string();
+    current_image_data.image_path = image_path;
     current_image_data.matrix = image;
     current_image_data.center = center;
     current_image_data.window_title = "Prompt";
@@ -61,7 +61,13 @@ void Prompter::prompt(const boost::filesystem::path &image_path) {
     setMouseCallback(current_image_data.window_title, mouse_callback, this);
     imshow(current_image_data.window_title, image);
 
-    while ((char) waitKey(0) != ' ') {}
+    while ((char) waitKey(0) != ' ') {} // wait for user to add a few lines
+
+    // record all angles
+    for (auto &point : current_image_data.streamer_clicks) {
+        double angle = calculate_angle(point, current_image_data.center);
+        table[image_path.filename().string()].push_back(angle);
+    }
 }
 
 const std::map<std::string, std::vector<double>> &Prompter::get_table() {
@@ -85,5 +91,31 @@ cv::Point Prompter::calculate_center(cv::Mat &image, bool is_modeled) {
 
     Vec3f &circle = circles[0]; // good detection should only return one
     return Point{cvRound(circle[0]), cvRound(circle[1])};
+}
+
+double Prompter::calculate_angle(cv::Point point, cv::Point center) {
+    double deltaX = point.x - center.x; // keep in mind openCV has 0,0 at top left
+    double deltaY = center.y - point.y;
+    double arc = abs(atan(deltaY / deltaX));
+
+    if (deltaX > 0 && deltaY > 0) {
+        return M_PI - arc;
+    }
+    if (deltaX > 0 && deltaY < 0) {
+        return M_PI + arc;
+    }
+    if (deltaX < 0 && deltaY > 0) {
+        return arc;
+    }
+    if (deltaX < 0 && deltaY < 0) {
+        return 2 * M_PI - arc;
+    }
+    if (deltaX == 0 && deltaY > 0) {
+        return M_PI / 2;
+    }
+    if (deltaX == 0 && deltaY < 0) {
+        return 3 * M_PI / 2;
+    }
+    return -1; // origin was clicked
 }
 
