@@ -19,7 +19,7 @@ void Prompter::prompt(const boost::filesystem::path &image_path) {
         return;
     }
 
-    Point center = calculate_center(image, true);
+    Point center = calculate_center(image, false);
     if (center.x < 0) {
         cerr << "could not find any circles in image: " << image_path.string() << endl;
         return;
@@ -40,20 +40,15 @@ cv::Point Prompter::calculate_center(cv::Mat &image, bool is_modeled) {
     Mat gray;
     cvtColor(image, gray, COLOR_BGR2GRAY);
 
-    GaussianBlur(gray, gray, Size(9, 9), 2, 2); // reduces noise
+    GaussianBlur(gray, gray, Size(15, 15), 2, 2); // reduces noise
 
     vector<Vec3f> circles;
 
-    if (is_modeled) {
-        HoughCircles(gray, circles, HOUGH_GRADIENT, 1, gray.rows / 8,
-                     200, 50, 0, 0);
-    } else {
-        HoughCircles(gray, circles, HOUGH_GRADIENT, 1, gray.rows / 8,
-                     120, 50, 0, 0);
-    }
+    HoughCircles(gray, circles, HOUGH_GRADIENT, 1, gray.rows / 8,
+                 200, 50, 0, 0);
 
     if (circles.size() == 0) {
-        return Point{-1, -1};
+        return Point{-1, -1}; // impossible point
     }
 
     Vec3f &circle = circles[0]; // good detection should only return one
