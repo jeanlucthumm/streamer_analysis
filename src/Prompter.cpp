@@ -11,18 +11,28 @@
 using namespace std;
 using namespace cv;
 
+void show_with_lines(ImageData &data, Point mouse_point) {
+    Mat matrix = data.matrix.clone(); // if bigger pictures, this is a huge bottleneck
+    line(matrix, data.center, mouse_point, Scalar{255, 0, 0}, 1, LINE_AA);
+
+    for (auto &point : data.streamer_clicks) {
+        line(matrix, data.center, point, Scalar{244, 137, 244}, 1, LINE_AA);
+    }
+
+    imshow(data.window_title, matrix);
+}
+
 void mouse_callback(int event, int x, int y, int flag, void *param) {
     Prompter *prompter = (Prompter *) param;
     ImageData &data = prompter->current_image_data;
 
     if (event == EVENT_MOUSEMOVE) {
         Point mouse_point{x, y};
-        Mat matrix = data.matrix.clone(); // if bigger pictures, this is a huge bottleneck
-        line(matrix, data.center, mouse_point, Scalar{255, 0, 0}, 1, LINE_AA);
-        imshow(data.window_title, matrix);
+        show_with_lines(data, mouse_point);
     } else if (event == EVENT_LBUTTONUP) {
         Point mouse_point{x, y};
         data.streamer_clicks.push_back(mouse_point);
+        show_with_lines(data, mouse_point);
     }
 }
 
