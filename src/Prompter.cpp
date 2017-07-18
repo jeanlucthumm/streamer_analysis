@@ -11,6 +11,14 @@
 using namespace std;
 using namespace cv;
 
+void mouse_callback(int event, int x, int y, int flag, void *param) {
+    Prompter *prompter = (Prompter *) param;
+
+    if (event == EVENT_MOUSEMOVE) {
+        cout << "(" << x << ", " << y << ")" << endl; // DEBUG
+    }
+}
+
 void Prompter::prompt(const boost::filesystem::path &image_path) {
     Mat image = imread(image_path.string());
 
@@ -27,7 +35,9 @@ void Prompter::prompt(const boost::filesystem::path &image_path) {
     circle(image, center, 3, Scalar(0, 255, 0), -1); // display dot at center
 
     namedWindow("example");
+    setMouseCallback("example", mouse_callback, this);
     imshow("example", image);
+
 
     waitKey(0);
 }
@@ -54,5 +64,4 @@ cv::Point Prompter::calculate_center(cv::Mat &image, bool is_modeled) {
     Vec3f &circle = circles[0]; // good detection should only return one
     return Point{cvRound(circle[0]), cvRound(circle[1])};
 }
-
 

@@ -13,13 +13,6 @@ using namespace cv;
 using namespace std;
 using namespace boost::filesystem;
 
-
-void mouse_callback(int event, int x, int y, int flag, void *param) {
-    if (event == EVENT_MOUSEMOVE) {
-        cout << "(" << x << "," << y << ")" << endl;
-    }
-}
-
 void findCircle() {
     string name("data/a-s.jpg");
     Mat image;
