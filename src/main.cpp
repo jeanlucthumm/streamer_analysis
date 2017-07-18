@@ -7,6 +7,7 @@
 #include <boost/filesystem.hpp>
 
 #include <iostream>
+#include "../Prompter.h"
 
 using namespace cv;
 using namespace std;
@@ -88,7 +89,9 @@ int main(int argc, char **argv) {
     directory_iterator begin{data_path}, end;
     vector<directory_entry> entries{begin, end};
 
+    Prompter prompter;
     for (auto &entry : entries) {
         cout << entry.path() << endl;
+        prompter.prompt(entry.path());
     }
 }

@@ -12,16 +12,16 @@
 
 class Prompter {
 public:
-    void prompt(boost::filesystem::path &image_path);
+    void prompt(const boost::filesystem::path &image_path);
 
-    const std::map<std::string, std::vector> &get_table();
+    const std::map<std::string, std::vector<double>> &get_table();
 
     Prompter() : table{} {}
 
 private:
-    cv::Point calculate_center(cv::Mat &image);
+    cv::Point calculate_center(cv::Mat &image, bool is_modeled);
 
-    std::map<std::string, std::vector> table;
+    std::map<std::string, std::vector<double>> table;
 };
 
 
