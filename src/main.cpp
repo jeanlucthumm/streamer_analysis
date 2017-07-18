@@ -4,10 +4,14 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/features2d/features2d.hpp>
 
+#include <boost/filesystem.hpp>
+
 #include <iostream>
 
 using namespace cv;
 using namespace std;
+using namespace boost::filesystem;
+
 
 void mouse_callback(int event, int x, int y, int flag, void *param) {
     if (event == EVENT_MOUSEMOVE) {
@@ -15,19 +19,14 @@ void mouse_callback(int event, int x, int y, int flag, void *param) {
     }
 }
 
-/*
- * 250, 50 works for modeled images
- * 120, 50 works with observed images
- */
-
-int main() {
+void findCircle() {
     string name("data/a-s.jpg");
     Mat image;
     image = imread(name.c_str());
 
     if (image.empty()) {
         cout << "Could not open image file" << endl;
-        return -1;
+        return;
     }
 
 
@@ -60,5 +59,36 @@ int main() {
 
     waitKey();
 
-    return 0;
+/*
+ * 250, 50 works for modeled images
+ * 120, 50 works with observed images
+ */
+
+    return;
+}
+
+
+int main(int argc, char **argv) {
+    if (argc != 2) {
+        return EXIT_FAILURE;
+    }
+
+    path data_path{argv[1]};
+
+    try {
+        if (!exists(data_path) || !is_directory(data_path)) {
+            cout << "invalid data path: " << data_path << endl;
+            return EXIT_FAILURE;
+        }
+    } catch (filesystem_error& error) {
+        cerr << error.what() << endl;
+        return EXIT_FAILURE;
+    }
+
+    directory_iterator begin(data_path), end;
+    vector<directory_entry> entries{begin, end};
+
+    for (auto &entry : entries) {
+        cout << entry.path() << endl;
+    }
 }
