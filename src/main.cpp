@@ -7,7 +7,7 @@
 #include <boost/filesystem.hpp>
 
 #include <iostream>
-#include "../Prompter.h"
+#include "Prompter.h"
 
 using namespace cv;
 using namespace std;

@@ -11,7 +11,7 @@ include_directories(${OpenCV_INCLUDE_DIR})
 find_package(Boost COMPONENTS filesystem REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 
-add_executable(stereo_reader src/main.cpp Prompter.cpp Prompter.h)
+add_executable(stereo_reader src/main.cpp src/Prompter.cpp src/Prompter.h)
 target_link_libraries(stereo_reader ${OpenCV_LIBS} ${Boost_LIBRARIES})
 
 add_executable(thresh_test src/thresh_test.cpp)
