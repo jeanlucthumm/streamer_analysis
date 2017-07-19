@@ -6,6 +6,7 @@ USAGE = 'USAGE: interpret_results file.csv'
 
 table = {}
 
+
 def main(argv):
     if len(argv) != 2:
         print(USAGE)
@@ -17,12 +18,13 @@ def main(argv):
         reader = csv.reader(file, delimiter=',')
         for row in reader:
             if len(row) < 1:
+                print('malformed row:', row)
                 continue
             parts = utils.get_name_data(row[0])
             if parts is None:
                 print('could not process file name:', row[0])
                 continue
-            print(parts, row)
+            utils.populate_table(table, parts, row[1:])
 
 
 if __name__ == '__main__':
