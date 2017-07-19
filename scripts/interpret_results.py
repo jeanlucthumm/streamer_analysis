@@ -7,6 +7,9 @@ USAGE = 'USAGE: interpret_results file.csv'
 table = {}
 
 
+
+
+
 def main(argv):
     if len(argv) != 2:
         print(USAGE)
@@ -25,6 +28,8 @@ def main(argv):
                 print('could not process file name:', row[0])
                 continue
             utils.populate_table(table, parts, row[1:])
+    for k, data_point in table.items():
+        print(k, utils.get_streamer_delta(data_point, 0.5))
 
 
 if __name__ == '__main__':

@@ -26,11 +26,11 @@ def get_name_data(name: str):
         return parts[0], parts[1]
 
 
-def populate_table(table, parts, angles):
+def populate_table(table: {str: DataPoint}, parts: (str, str), angles: []):
     """
     Populates with one entry, a lookup table containing DataPoints
     :param table: {name, DataPoint(name)}
-    :param parts: (prefix, 'o','s') where prefix is base name,
+    :param parts: (prefix, 'o'/'s') where prefix is base name,
     'o' is observed, and 's' is simulated
     :param angles: list of streamer angles (rads) found in image
     :return: True if no errors were encountered, False otherwise
@@ -63,4 +63,17 @@ def populate_table(table, parts, angles):
     return no_error
 
 
-
+def get_streamer_delta(data_point: DataPoint, threshold):
+    """
+    Finds correlated streamer angles and computes the difference between them
+    :param data_point: DataPoint containing streamer angles
+    :param threshold: used to determine correlation
+    :return: list of angle deltas (simulated - observed)
+    """
+    result = []
+    for s_angle in data_point.s:
+        for o_angle in data_point.o:
+            delta = s_angle - o_angle
+            if abs(delta) <= threshold:
+                result.append(delta)
+    return result
