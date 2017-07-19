@@ -65,5 +65,6 @@ Temporary Items
 cmake-build-debug
 data/gif
 data/testing
+out.csv
 
 

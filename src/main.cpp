@@ -6,7 +6,8 @@ using namespace std;
 using namespace boost::filesystem;
 
 int main(int argc, char **argv) {
-    if (argc != 2) {
+    if (argc != 3) {
+        cout << "USAGE: stereo-reader data_dir csv_output_file" << endl;
         return EXIT_FAILURE;
     }
 
@@ -23,6 +24,12 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
+    std::ofstream file{argv[2]};
+    if (!file.is_open()) {
+        cout << "could not create output file" << endl;
+        return EXIT_FAILURE;
+    }
+
     directory_iterator begin{data_path}, end;
     vector<directory_entry> entries{begin, end};
     random_shuffle(entries.begin(), entries.end()); // randomize to eliminate bias
@@ -32,12 +39,19 @@ int main(int argc, char **argv) {
         prompter.prompt(entry.path());
     }
 
+    // write csv file
+    file << "file name,angle1,angle2,..." << endl;
+
     auto &table = prompter.get_table();
     for (auto &entry : table) {
-        cout << entry.first << ": ";
+        file << entry.first;
         for (double angle : entry.second) {
-            cout << angle << ", ";
+            file << "," << angle;
         }
-        cout << endl;
+        file << endl;
     }
+
+    file.close();
+
+    return EXIT_SUCCESS;
 }
