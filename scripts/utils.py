@@ -75,5 +75,5 @@ def get_streamer_delta(data_point: DataPoint, threshold):
         for o_angle in data_point.o:
             delta = s_angle - o_angle
             if abs(delta) <= threshold:
-                result.append(delta)
+                result.append(round(delta, 10))
     return result
