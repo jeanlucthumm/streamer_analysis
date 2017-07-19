@@ -1,3 +1,5 @@
+ROUND_ERR = 10  # to how many decimal digits to round to
+
 class DataPoint:
     """
     A data point with streamer angle data for observed and simulated images
@@ -75,5 +77,5 @@ def get_streamer_delta(data_point: DataPoint, threshold):
         for o_angle in data_point.o:
             delta = s_angle - o_angle
             if abs(delta) <= threshold:
-                result.append(round(delta, 10))
+                result.append(round(delta, ROUND_ERR))
     return result
