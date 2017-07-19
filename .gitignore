@@ -63,8 +63,9 @@ Temporary Items
 ### User additions
 .idea
 cmake-build-debug
+cmake-build-release
 data/gif
 data/testing
-out.csv
+*.csv
 
 
