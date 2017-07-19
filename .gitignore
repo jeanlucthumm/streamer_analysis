@@ -67,6 +67,7 @@ cmake-build-release
 data/gif
 data/testing
 *.csv
-!data/streamer_angles.csv
+!**/streamer_angles.csv
+!**/correlation.csv
 
 
