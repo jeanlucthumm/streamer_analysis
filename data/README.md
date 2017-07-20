@@ -16,5 +16,5 @@ exceptionally clear streamers.
 #### Additional files
 - `streamer-angles.csv` contains all the identified angles in each file.
   Angles are in radians and are measured from the left horizontal axis up
-- `correlation.csv` contains the difference in angle between correlated streamers
+- `correlation.csv` contains the difference in angle between correlated streamers **(simulated - observed)**
 - `stats.txt` contains statistics on the values found in `correlation.csv`
