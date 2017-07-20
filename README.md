@@ -26,6 +26,13 @@ and an output file path as its second argument:
     $ ./streamer_analysis
     USAGE: stereo-reader data_dir csv_output_file
     
+The program will provide an interface to click streamers, thereby tracing a line from the center 
+to their tip, and then record these angles in the output file. The controls are as follows:
+- Click to record a streamer angle (this will turn the line from blue to rosa)
+- Rosa lines will be recorded in the output file
+- Hit spacebar at any time to continue to the next image
+- The program will automatically terminate when the last image is reached
+    
 ## Project Structure
 - `data` contains sample images. Consult README.md in subdirectory
 - `src` contains *streamer_analysis* source code
