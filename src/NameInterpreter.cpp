@@ -2,14 +2,14 @@
 // Created by Jean-Luc Thumm on 7/20/17.
 //
 
-#include "NameProcessor.h"
+#include "NameInterpreter.h"
 #include <vector>
 #include <iostream>
 #include <boost/algorithm/string.hpp>
 
 using namespace std;
 
-std::string NameProcessor::get_pair(std::string name) {
+std::string NameInterpreter::get_pair(std::string name) {
     if (boost::contains(name, "-s")) {
         boost::replace_last(name, "-s", "-o");
     } else if (boost::contains(name, "-o")) {
@@ -21,6 +21,6 @@ std::string NameProcessor::get_pair(std::string name) {
     return name;
 }
 
-void NameProcessor::print_err_msg(std::string &name) {
+void NameInterpreter::print_err_msg(std::string &name) {
     cerr << "could not get pair for name: " << name << endl;
 }

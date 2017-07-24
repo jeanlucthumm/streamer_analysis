@@ -12,7 +12,7 @@ include_directories(${Boost_INCLUDE_DIR})
 set(SOURCES
         src/Prompter.h src/Prompter.cpp
         src/ImageData.h
-        src/NameProcessor.h src/NameProcessor.cpp
+        src/NameInterpreter.h src/NameInterpreter.cpp
         )
 
 add_executable(stereo_reader src/main.cpp ${SOURCES})

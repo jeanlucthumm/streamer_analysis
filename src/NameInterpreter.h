@@ -8,7 +8,7 @@
 
 #include <string>
 
-class NameProcessor {
+class NameInterpreter {
 public:
     static std::string get_pair(std::string name);
 
