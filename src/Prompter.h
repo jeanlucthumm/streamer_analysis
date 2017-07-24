@@ -45,12 +45,24 @@ private:
 
 class image_error : public std::runtime_error {
 public:
-    image_error(const std::string &name) : runtime_error(make_message(name)) {}
-
-private:
-    std::string make_message(const std::string &name) {
-        return "could not find/open image: " + name;
+    static image_error def(const std::string &name) {
+        return image_error("could not open/find image: " + name);
     }
+
+    image_error(std::string message) : runtime_error(message) {}
+};
+
+class processing_error : public std::runtime_error {
+public:
+    static processing_error def(const std::string &name) {
+        return processing_error{"could not process image: " + name};
+    }
+
+    static processing_error center(const std::string &name) {
+        return processing_error{"coudl not find center of image: " + name};
+    }
+
+    processing_error(std::string message) : runtime_error(message) {}
 };
 
 
