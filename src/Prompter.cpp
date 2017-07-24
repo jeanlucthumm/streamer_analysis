@@ -23,8 +23,7 @@ void show_with_lines(ImageData &data, Point mouse_point) {
 }
 
 void mouse_callback(int event, int x, int y, int flag, void *param) {
-    Prompter *prompter = (Prompter *) param;
-    ImageData &data = prompter->current_image_data;
+    ImageData &data = *(ImageData *) param;
 
     if (event == EVENT_MOUSEMOVE) {
         Point mouse_point{x, y};
@@ -36,7 +35,7 @@ void mouse_callback(int event, int x, int y, int flag, void *param) {
     }
 }
 
-void Prompter::prompt(const boost::filesystem::path &image_path) {
+ImageData Prompter::prompt(const boost::filesystem::path &image_path) {
     Mat image = imread(image_path.string());
 
     if (image.empty()) {
@@ -50,23 +49,25 @@ void Prompter::prompt(const boost::filesystem::path &image_path) {
 
     circle(image, center, 3, Scalar(0, 255, 0), -1); // display dot at center
 
-    current_image_data.image_path = image_path;
-    current_image_data.matrix = image;
-    current_image_data.center = center;
-    current_image_data.window_title = "Prompt";
-    current_image_data.streamer_clicks.clear();
+    ImageData data;
+    data.image_path = image_path;
+    data.matrix = image;
+    data.center = center;
+    data.window_title = "Prompt";
 
-    namedWindow(current_image_data.window_title);
-    setMouseCallback(current_image_data.window_title, mouse_callback, this);
-    imshow(current_image_data.window_title, image);
+    namedWindow(data.window_title);
+    setMouseCallback(data.window_title, mouse_callback, &data);
+    imshow(data.window_title, image);
 
     while ((char) waitKey(0) != ' ') {} // wait for user to add a few lines
 
+    return data;
+
     // record all angles
-    for (auto &point : current_image_data.streamer_clicks) {
-        double angle = calculate_angle(point, current_image_data.center);
-        table[image_path.filename().string()].push_back(angle);
-    }
+//    for (auto &point : current_image_data.streamer_clicks) {
+//        double angle = calculate_angle(point, current_image_data.center);
+//        table[image_path.filename().string()].push_back(angle);
+//    }
 }
 
 std::pair<ImageData, ImageData>

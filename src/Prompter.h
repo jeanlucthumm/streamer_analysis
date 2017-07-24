@@ -13,7 +13,7 @@
 
 class Prompter {
 public:
-    void prompt(const boost::filesystem::path &image_path);
+    ImageData prompt(const boost::filesystem::path &image_path);
 
     std::pair<ImageData, ImageData>
     prompt_double(const boost::filesystem::path &image1_path,
