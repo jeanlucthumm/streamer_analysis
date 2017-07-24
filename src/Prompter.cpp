@@ -40,15 +40,14 @@ void Prompter::prompt(const boost::filesystem::path &image_path) {
     Mat image = imread(image_path.string());
 
     if (image.empty()) {
-        cerr << "could not open image file: " << image_path.string() << endl;
-        return;
+        throw image_error::def(image_path.string());
     }
 
     Point center = calculate_center(image, false);
     if (center.x < 0) {
-        cerr << "could not find any circles in image: " << image_path.string() << endl;
-        return;
+        throw processing_error::center(image_path.string());
     }
+
     circle(image, center, 3, Scalar(0, 255, 0), -1); // display dot at center
 
     current_image_data.image_path = image_path;
@@ -70,22 +69,18 @@ void Prompter::prompt(const boost::filesystem::path &image_path) {
     }
 }
 
-boost::optional<std::pair<ImageData, ImageData>>
+std::pair<ImageData, ImageData>
 Prompter::prompt_double(const boost::filesystem::path &image1_path,
                         const boost::filesystem::path &image2_path) {
     Mat image1 = imread(image1_path.string());
     Mat image2 = imread(image2_path.string());
 
     if (image1.empty()) {
-        cerr << "could not open image file: " << image1_path.string() << endl;
-        return boost::none;
+        throw image_error::def(image1_path.string());
     }
     if (image2.empty()) {
-        cerr << "could not open image file: " << image2_path.string() << endl;
-        return boost::none;
+        throw image_error::def(image2_path.string());
     }
-
-
 }
 
 const std::map<std::string, std::vector<double>> &Prompter::get_table() {
