@@ -43,5 +43,15 @@ private:
     ImageData current_image_data;
 };
 
+class image_error : public std::runtime_error {
+public:
+    image_error(const std::string &name) : runtime_error(make_message(name)) {}
+
+private:
+    std::string make_message(const std::string &name) {
+        return "could not find/open image: " + name;
+    }
+};
+
 
 #endif //STEREO_READER_PROMPTER_H
