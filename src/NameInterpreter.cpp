@@ -10,9 +10,9 @@
 using namespace std;
 
 std::string NameInterpreter::get_pair(std::string name) {
-    if (boost::contains(name, "-s")) {
+    if (isSimulated(name)) {
         boost::replace_last(name, "-s", "-o");
-    } else if (boost::contains(name, "-o")) {
+    } else if (isObserved(name)) {
         boost::replace_last(name, "-o", "-s");
     } else {
         print_err_msg(name);
@@ -23,4 +23,12 @@ std::string NameInterpreter::get_pair(std::string name) {
 
 void NameInterpreter::print_err_msg(std::string &name) {
     cerr << "could not get pair for name: " << name << endl;
+}
+
+bool NameInterpreter::isObserved(const std::string &name) {
+    return boost::contains(name, "-o");
+}
+
+bool NameInterpreter::isSimulated(const std::string &name) {
+    return boost::contains(name, "-s");
 }

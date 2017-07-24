@@ -12,6 +12,10 @@ class NameInterpreter {
 public:
     static std::string get_pair(std::string name);
 
+    static bool isObserved(const std::string &name);
+
+    static bool isSimulated(const std::string &name);
+
 private:
     static void print_err_msg(std::string &name);
 };
