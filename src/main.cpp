@@ -36,7 +36,11 @@ int main(int argc, char **argv) {
 
     Prompter prompter;
     for (auto &entry : entries) {
-        prompter.prompt(entry.path());
+        try {
+            prompter.prompt(entry.path());
+        } catch (runtime_error &error) {
+            cerr << error.what() << endl;
+        }
     }
 
     // write csv file
