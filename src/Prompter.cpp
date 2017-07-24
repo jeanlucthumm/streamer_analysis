@@ -70,6 +70,24 @@ void Prompter::prompt(const boost::filesystem::path &image_path) {
     }
 }
 
+boost::optional<std::pair<ImageData, ImageData>>
+Prompter::prompt_double(const boost::filesystem::path &image1_path,
+                        const boost::filesystem::path &image2_path) {
+    Mat image1 = imread(image1_path.string());
+    Mat image2 = imread(image2_path.string());
+
+    if (image1.empty()) {
+        cerr << "could not open image file: " << image1_path.string() << endl;
+        return boost::none;
+    }
+    if (image2.empty()) {
+        cerr << "could not open image file: " << image2_path.string() << endl;
+        return boost::none;
+    }
+
+
+}
+
 const std::map<std::string, std::vector<double>> &Prompter::get_table() {
     return table;
 }
@@ -118,4 +136,5 @@ double Prompter::calculate_angle(cv::Point point, cv::Point center) {
     }
     return -1; // origin was clicked
 }
+
 

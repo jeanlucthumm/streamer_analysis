@@ -8,12 +8,24 @@
 
 #include <map>
 #include <boost/filesystem/path.hpp>
+#include <boost/optional.hpp>
 #include <opencv2/core/types.hpp>
 #include "ImageData.h"
 
 class Prompter {
 public:
     void prompt(const boost::filesystem::path &image_path);
+
+    /**
+     * Prompt with a pair of images to allow use to see correlated streamers
+     * @param image1_path path to the first image
+     * @param image2_path path to the second image
+     * @return an optional pair of ImageData, where correlated streamer clicks occupy the same
+     * index in the ImageData.streamer_clicks array, or boost::none if error occured
+     */
+    boost::optional<std::pair<ImageData, ImageData>>
+    prompt_double(const boost::filesystem::path &image1_path,
+                  const boost::filesystem::path &image2_path);
 
     const std::map<std::string, std::vector<double>> &get_table();
 
