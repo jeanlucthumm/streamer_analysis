@@ -65,10 +65,10 @@ ImageData Prompter::prompt(const boost::filesystem::path &image_path) {
     return data;
 
     // record all angles
-    for (auto &point : current_image_data.streamer_clicks) {
-        double angle = calculate_angle(point, current_image_data.center);
-        table[image_path.filename().string()].push_back(angle);
-    }
+//    for (auto &point : current_image_data.streamer_clicks) {
+//        double angle = calculate_angle(point, current_image_data.center);
+//        table[image_path.filename().string()].push_back(angle);
+//    }
 }
 
 std::pair<ImageData, ImageData>
@@ -143,20 +143,3 @@ cv::Point Prompter::calculate_center(cv::Mat &image, bool is_modeled) {
     Vec3f &circle = circles[0]; // good detection should only return one
     return Point{cvRound(circle[0]), cvRound(circle[1])};
 }
-
-double Prompter::calculate_angle(cv::Point point, cv::Point center) {
-    double deltaX = point.x - center.x; // keep in mind openCV has 0,0 at top left
-    double deltaY = point.y - center.y;
-    if (deltaX == 0) return 0; // don't want to break math
-    double arc = abs(atan(deltaY / deltaX));
-
-    if (deltaY < 0) { // above origin
-        return arc;
-    } else if (deltaY > 0) {
-        return -arc;
-    } else {
-        return 0;
-    }
-}
-
-

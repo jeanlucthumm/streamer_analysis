@@ -23,6 +23,8 @@ namespace processing {
 
     bool isSimulated(const boost::filesystem::path &name);
 
+    double compute_angle(cv::Point point, cv::Point center);
+
     std::vector<Correlation>
     compute_correlations(std::vector<std::pair<ImageData, ImageData>> &data_table);
 };

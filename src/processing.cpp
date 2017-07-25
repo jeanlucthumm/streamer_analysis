@@ -42,6 +42,21 @@ bool processing::isSimulated(const boost::filesystem::path &name) {
     return boost::contains(name.stem().string(), SIM);
 }
 
+double processing::compute_angle(cv::Point point, cv::Point center) {
+    double deltaX = point.x - center.x; // keep in mind openCV has 0,0 at top left
+    double deltaY = point.y - center.y;
+    if (deltaX == 0) return 0; // don't want to break math
+    double arc = abs(atan(deltaY / deltaX));
+
+    if (deltaY < 0) { // above origin
+        return arc;
+    } else if (deltaY > 0) {
+        return -arc;
+    } else {
+        return 0;
+    }
+}
+
 std::vector<Correlation>
 processing::compute_correlations(std::vector<std::pair<ImageData, ImageData>> &data_table) {
     vector<Correlation> correlations;
@@ -58,9 +73,12 @@ processing::compute_correlations(std::vector<std::pair<ImageData, ImageData>> &d
         }
 
         for (int i = 0; i < data1.streamer_clicks.size(); i++) {
-            correlations.emplace_back(prefix, data1.streamer_clicks[i],
-                                      data2.streamer_clicks[i]);
+            double angle1 = processing::compute_angle(data1.streamer_clicks[i], data1.center);
+            double angle2 = processing::compute_angle(data2.streamer_clicks[i], data2.center);
+            correlations.emplace_back(prefix, angle1, angle2);
         }
     }
+
+    return correlations;
 }
 
