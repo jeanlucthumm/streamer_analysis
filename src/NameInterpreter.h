@@ -10,16 +10,12 @@
 #define OBS "-o"
 #define SIM "-s"
 
-class NameInterpreter {
-public:
-    static boost::filesystem::path get_pair(boost::filesystem::path name);
+namespace processing {
+    boost::filesystem::path get_pair(boost::filesystem::path name);
 
-    static bool isObserved(const boost::filesystem::path &name);
+    bool isObserved(const boost::filesystem::path &name);
 
-    static bool isSimulated(const boost::filesystem::path &name);
-
-private:
-    static void print_err_msg(const std::string &name);
+    bool isSimulated(const boost::filesystem::path &name);
 };
 
 

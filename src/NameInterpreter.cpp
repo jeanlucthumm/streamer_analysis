@@ -10,7 +10,11 @@
 using namespace std;
 using namespace boost::filesystem;
 
-boost::filesystem::path NameInterpreter::get_pair(boost::filesystem::path name) {
+static void print_err_msg(const std::string &name) {
+    cerr << "could not find pair for image: " + name << endl;
+}
+
+boost::filesystem::path processing::get_pair(boost::filesystem::path name) {
     if (isObserved(name)) {
         string name_str = name.string();
         boost::replace_last(name_str, OBS, SIM);
@@ -25,14 +29,11 @@ boost::filesystem::path NameInterpreter::get_pair(boost::filesystem::path name) 
     }
 }
 
-bool NameInterpreter::isObserved(const boost::filesystem::path &name) {
+bool processing::isObserved(const boost::filesystem::path &name) {
     return boost::contains(name.stem().string(), OBS);
 }
 
-bool NameInterpreter::isSimulated(const boost::filesystem::path &name) {
+bool processing::isSimulated(const boost::filesystem::path &name) {
     return boost::contains(name.stem().string(), SIM);
 }
 
-void NameInterpreter::print_err_msg(const std::string &name) {
-    cerr << "could not find pair for image: " + name << endl;
-}
