@@ -5,19 +5,21 @@
 #ifndef STEREO_READER_NAMEPROCESSOR_H
 #define STEREO_READER_NAMEPROCESSOR_H
 
+#include <boost/filesystem/path.hpp>
 
-#include <string>
+#define OBS "-o"
+#define SIM "-s"
 
 class NameInterpreter {
 public:
-    static std::string get_pair(std::string name);
+    static boost::filesystem::path get_pair(boost::filesystem::path name);
 
-    static bool isObserved(const std::string &name);
+    static bool isObserved(const boost::filesystem::path &name);
 
-    static bool isSimulated(const std::string &name);
+    static bool isSimulated(const boost::filesystem::path &name);
 
 private:
-    static void print_err_msg(std::string &name);
+    static void print_err_msg(const std::string &name);
 };
 
 

@@ -8,27 +8,31 @@
 #include <boost/algorithm/string.hpp>
 
 using namespace std;
+using namespace boost::filesystem;
 
-std::string NameInterpreter::get_pair(std::string name) {
-    if (isSimulated(name)) {
-        boost::replace_last(name, "-s", "-o");
-    } else if (isObserved(name)) {
-        boost::replace_last(name, "-o", "-s");
+boost::filesystem::path NameInterpreter::get_pair(boost::filesystem::path name) {
+    if (isObserved(name)) {
+        string name_str = name.string();
+        boost::replace_last(name_str, OBS, SIM);
+        return path{name_str};
+    } else if (isSimulated(name)) {
+        string name_str = name.string();
+        boost::replace_last(name_str, SIM, OBS);
+        return path{name_str};
     } else {
-        print_err_msg(name);
-        return ""; // TODO figure out a better way to report error
+        print_err_msg(name.string());
+        return "";
     }
-    return name;
 }
 
-void NameInterpreter::print_err_msg(std::string &name) {
-    cerr << "could not get pair for name: " << name << endl;
+bool NameInterpreter::isObserved(const boost::filesystem::path &name) {
+    return boost::contains(name.stem().string(), OBS);
 }
 
-bool NameInterpreter::isObserved(const std::string &name) {
-    return boost::contains(name, "-o");
+bool NameInterpreter::isSimulated(const boost::filesystem::path &name) {
+    return boost::contains(name.stem().string(), SIM);
 }
 
-bool NameInterpreter::isSimulated(const std::string &name) {
-    return boost::contains(name, "-s");
+void NameInterpreter::print_err_msg(const std::string &name) {
+    cerr << "could not find pair for image: " + name << endl;
 }
