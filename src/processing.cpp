@@ -2,7 +2,7 @@
 // Created by Jean-Luc Thumm on 7/20/17.
 //
 
-#include "NameInterpreter.h"
+#include "processing.h"
 #include <boost/algorithm/string.hpp>
 
 using namespace std;
