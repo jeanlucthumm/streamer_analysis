@@ -2,7 +2,7 @@
 // Created by Jean-Luc Thumm on 7/24/17.
 //
 #include <iostream>
-#include "NameInterpreter.h"
+#include "processing.h"
 
 using namespace std;
 using namespace boost::filesystem;

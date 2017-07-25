@@ -7,6 +7,7 @@
 #include <iostream>
 #include <opencv/cv.hpp>
 #include "Prompter.h"
+#include "processing.h"
 
 using namespace std;
 using namespace cv;
@@ -64,10 +65,10 @@ ImageData Prompter::prompt(const boost::filesystem::path &image_path) {
     return data;
 
     // record all angles
-//    for (auto &point : current_image_data.streamer_clicks) {
-//        double angle = calculate_angle(point, current_image_data.center);
-//        table[image_path.filename().string()].push_back(angle);
-//    }
+    for (auto &point : current_image_data.streamer_clicks) {
+        double angle = calculate_angle(point, current_image_data.center);
+        table[image_path.filename().string()].push_back(angle);
+    }
 }
 
 std::pair<ImageData, ImageData>
@@ -82,6 +83,42 @@ Prompter::prompt_double(const boost::filesystem::path &image1_path,
     if (image2.empty()) {
         throw image_error::def(image2_path.string());
     }
+
+    bool isSimulated1 = processing::isSimulated(image1_path);
+    bool isSimulated2 = processing::isSimulated(image2_path);
+
+    Point center1 = calculate_center(image1, isSimulated1);
+    Point center2 = calculate_center(image2, isSimulated2);
+
+    if (center1.x < 0) {
+        throw processing_error::center(image1_path.string());
+    }
+    if (center2.x < 0) {
+        throw processing_error::center(image2_path.string());
+    }
+
+    circle(image1, center1, 3, Scalar(0, 255, 0), -1); // display centers
+    circle(image2, center2, 3, Scalar(0, 255, 0), -1);
+
+    ImageData data1, data2;
+
+    data1.image_path = image1_path;
+    data1.matrix = image1;
+    data1.center = center1;
+    data1.window_title = (isSimulated1) ? "Simulated" : "Observed";
+
+    data2.image_path = image2_path;
+    data2.matrix = image2;
+    data2.center = center2;
+    data2.window_title = (isSimulated2) ? "Simulated" : "Observed";
+
+    namedWindow(data1.window_title);
+    setMouseCallback(data1.window_title, mouse_callback, &data1);
+    setMouseCallback(data2.window_title, mouse_callback, &data2);
+
+    while((char) waitKey(0) != ' ') {} // wait for user to add a few lines
+
+    return make_pair(data1, data2);
 }
 
 const std::map<std::string, std::vector<double>> &Prompter::get_table() {

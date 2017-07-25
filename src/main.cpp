@@ -1,6 +1,7 @@
 #include <boost/filesystem.hpp>
 #include <iostream>
 #include "Prompter.h"
+#include "processing.h"
 
 using namespace std;
 using namespace boost::filesystem;
@@ -37,11 +38,14 @@ int main(int argc, char **argv) {
     Prompter prompter;
     for (auto &entry : entries) {
         try {
-            prompter.prompt(entry.path());
+//            prompter.prompt(entry.path());
+            prompter.prompt_double(entry.path(), processing::get_pair(entry.path()));
         } catch (runtime_error &error) {
             cerr << error.what() << endl;
         }
     }
+
+    return 0;
 
     // write csv file
     file << "file name,angle1,angle2,..." << endl;
