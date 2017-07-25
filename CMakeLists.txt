@@ -13,7 +13,7 @@ set(SOURCES
         src/Prompter.h src/Prompter.cpp
         src/ImageData.h
         src/NameInterpreter.h src/NameInterpreter.cpp
-        src/Processor.cpp src/Processor.h src/Correlation.h)
+        src/Correlation.h)
 
 add_executable(stereo_reader src/main.cpp ${SOURCES})
 target_link_libraries(stereo_reader ${OpenCV_LIBS} ${Boost_LIBRARIES})

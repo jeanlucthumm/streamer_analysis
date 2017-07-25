@@ -13,6 +13,8 @@
 namespace processing {
     boost::filesystem::path get_pair(boost::filesystem::path name);
 
+    std::string get_prefix(const boost::filesystem::path &name);
+
     bool isObserved(const boost::filesystem::path &name);
 
     bool isSimulated(const boost::filesystem::path &name);

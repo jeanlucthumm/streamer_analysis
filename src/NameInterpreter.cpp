@@ -20,9 +20,20 @@ boost::filesystem::path processing::get_pair(boost::filesystem::path name) {
         boost::replace_last(name_str, SIM, OBS);
         return path{name_str};
     } else {
-        cerr << "could not find pair for image: " + name.string() << endl;
-        return "";
+        throw runtime_error("could not find pair for image: " + name.string());
     }
+}
+
+std::string processing::get_prefix(const boost::filesystem::path &name) {
+    string stem = name.stem().string();
+
+    vector<string> parts;
+    boost::split(parts, stem, boost::is_any_of("-"));
+    if (parts.size() != 2) {
+        throw runtime_error("could not find prefix for image: " + name.string());
+    }
+
+    return parts[0];
 }
 
 bool processing::isObserved(const boost::filesystem::path &name) {
