@@ -6,6 +6,10 @@
 #define STEREO_READER_NAMEPROCESSOR_H
 
 #include <boost/filesystem/path.hpp>
+#include <vector>
+#include <string>
+#include "Correlation.h"
+#include "ImageData.h"
 
 #define OBS "-o"
 #define SIM "-s"
@@ -18,6 +22,9 @@ namespace processing {
     bool isObserved(const boost::filesystem::path &name);
 
     bool isSimulated(const boost::filesystem::path &name);
+
+    std::vector<Correlation>
+    compute_correlations(std::vector<std::pair<ImageData, ImageData>> &data_table);
 };
 
 

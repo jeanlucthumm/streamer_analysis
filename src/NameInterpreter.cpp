@@ -3,12 +3,10 @@
 //
 
 #include "NameInterpreter.h"
-#include <vector>
-#include <iostream>
 #include <boost/algorithm/string.hpp>
 
 using namespace std;
-using namespace boost::filesystem;
+using boost::filesystem::path;
 
 boost::filesystem::path processing::get_pair(boost::filesystem::path name) {
     if (isObserved(name)) {
@@ -42,5 +40,27 @@ bool processing::isObserved(const boost::filesystem::path &name) {
 
 bool processing::isSimulated(const boost::filesystem::path &name) {
     return boost::contains(name.stem().string(), SIM);
+}
+
+std::vector<Correlation>
+processing::compute_correlations(std::vector<std::pair<ImageData, ImageData>> &data_table) {
+    vector<Correlation> correlations;
+
+    for (auto &entry : data_table) {
+        ImageData &data1 = entry.first;
+        ImageData &data2 = entry.second;
+
+        // correlations map to same index in each vector -> must be same size
+        string prefix = get_prefix(data1.image_path);
+        if (data1.streamer_clicks.size() != data2.streamer_clicks.size() ||
+            prefix != get_prefix(data2.image_path)) {
+            throw runtime_error("found incompatible ImageData while computing correlations");
+        }
+
+        for (int i = 0; i < data1.streamer_clicks.size(); i++) {
+            correlations.emplace_back(prefix, data1.streamer_clicks[i],
+                                      data2.streamer_clicks[i]);
+        }
+    }
 }
 
