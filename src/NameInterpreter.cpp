@@ -10,10 +10,6 @@
 using namespace std;
 using namespace boost::filesystem;
 
-static void print_err_msg(const std::string &name) {
-    cerr << "could not find pair for image: " + name << endl;
-}
-
 boost::filesystem::path processing::get_pair(boost::filesystem::path name) {
     if (isObserved(name)) {
         string name_str = name.string();
@@ -24,7 +20,7 @@ boost::filesystem::path processing::get_pair(boost::filesystem::path name) {
         boost::replace_last(name_str, SIM, OBS);
         return path{name_str};
     } else {
-        print_err_msg(name.string());
+        cerr << "could not find pair for image: " + name.string() << endl;
         return "";
     }
 }
