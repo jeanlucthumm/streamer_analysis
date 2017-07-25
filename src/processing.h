@@ -29,3 +29,4 @@ namespace processing {
 
 
 #endif //STEREO_READER_NAMEPROCESSOR_H
+

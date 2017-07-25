@@ -146,28 +146,17 @@ cv::Point Prompter::calculate_center(cv::Mat &image, bool is_modeled) {
 
 double Prompter::calculate_angle(cv::Point point, cv::Point center) {
     double deltaX = point.x - center.x; // keep in mind openCV has 0,0 at top left
-    double deltaY = center.y - point.y;
+    double deltaY = point.y - center.y;
+    if (deltaX == 0) return 0; // don't want to break math
     double arc = abs(atan(deltaY / deltaX));
 
-    if (deltaX > 0 && deltaY > 0) {
-        return M_PI - arc;
-    }
-    if (deltaX > 0 && deltaY < 0) {
-        return M_PI + arc;
-    }
-    if (deltaX < 0 && deltaY > 0) {
+    if (deltaY < 0) { // above origin
         return arc;
+    } else if (deltaY > 0) {
+        return -arc;
+    } else {
+        return 0;
     }
-    if (deltaX < 0 && deltaY < 0) {
-        return 2 * M_PI - arc;
-    }
-    if (deltaX == 0 && deltaY > 0) {
-        return M_PI / 2;
-    }
-    if (deltaX == 0 && deltaY < 0) {
-        return 3 * M_PI / 2;
-    }
-    return -1; // origin was clicked
 }
 
 
