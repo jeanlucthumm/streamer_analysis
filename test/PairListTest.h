@@ -10,11 +10,12 @@
 #include <string>
 #include <iostream>
 #include "../src/PairList.h"
+#include "../src/processing.h"
 
 using namespace std;
 
 TEST(PairList, construct) {
-    vector<string> good_path_strings {
+    vector<string> path_strings {
             "data/a-s.jpg",
             "data/a-o.jpg",
             "data/hello-o.jpg",
@@ -23,12 +24,20 @@ TEST(PairList, construct) {
             "data/there-o.jpg"
     };
 
-    vector<boost::filesystem::path> good_paths;
-    for (string &s : good_path_strings) {
-        good_paths.emplace_back(s);
+    vector<boost::filesystem::path> paths;
+    for (string &s : path_strings) {
+        paths.emplace_back(s);
     }
 
-    PairList pair_list{good_paths};
+    PairList pair_list{paths};
+    for (auto &entry : pair_list) {
+        EXPECT_EQ(entry.first, processing::get_pair(entry.second));
+    }
+
+    paths.emplace_back("what");
+    paths[0] = boost::filesystem::path{"data/b-s"};
+
+    PairList pair_list_bad{paths};
 }
 
 #endif //STEREO_READER_PAIRLISTTEST_H
