@@ -4,6 +4,7 @@
 
 #include "processingTest.h"
 #include "ImageDataTest.h"
+#include "PairListTest.h"
 #include <gtest/gtest.h>
 
 int main(int argc, char **argv) {
