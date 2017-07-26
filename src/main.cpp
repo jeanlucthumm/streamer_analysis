@@ -61,15 +61,35 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
+    // get image pairs
     Prompter prompter;
+    vector<pair<ImageData, ImageData>> image_pairs;
     for (auto &entry : entries) {
         try {
-//            prompter.prompt(entry.path());
-            auto res = prompter.prompt_double(entry.path(), processing::get_pair(entry.path()));
-            print_data_pair(res);
+            path first = entry.path();
+            path second = processing::get_pair(first);
+
+            while (true) {
+                auto result = prompter.prompt_double(first, second);
+                if (processing::validate_image_pair(result.first, result.second)) {
+                    print_data_pair(result); // DEBUG
+                    image_pairs.push_back(result);
+                    break;
+                }
+                cerr << "Invalid streamer pairs. Did you click the same amount of times in each "
+                        "picture?" << endl;
+            }
         } catch (runtime_error &error) {
             cerr << error.what() << endl;
         }
+    }
+
+    // get correlations by processing image pairs
+    try {
+        vector<Correlation> correlations = processing::compute_correlations(image_pairs);
+    } catch (runtime_error &error) {
+        cerr << error.what() << endl;
+        return EXIT_FAILURE;
     }
 
     return 0;
