@@ -66,4 +66,20 @@ TEST(processing, computeAngle) {
     EXPECT_DOUBLE_EQ(processing::compute_angle(cv::Point{384, 384}, center), -M_PI / 4);
 }
 
+TEST(processing, validate_image_pair) {
+    ImageData a, b, c, d;
+    a.image_path = "data/a-s.jpg";
+    b.image_path = "data/a-o.jpg";
+    c.image_path = "data/a-o.jpg";
+    d.image_path = "data/asdf-s.jpg";
+    a.streamer_clicks = {cv::Point{2, 2}, cv::Point{4, 3}};
+    b.streamer_clicks = {cv::Point{2, 2}, cv::Point{4, 3}};
+    c.streamer_clicks = {cv::Point{2, 2}};
+    d.streamer_clicks = {cv::Point{2, 2}, cv::Point{4, 3}};
+
+    EXPECT_TRUE(processing::validate_image_pair(a, b));
+    EXPECT_FALSE(processing::validate_image_pair(a, c));
+    EXPECT_FALSE(processing::validate_image_pair(a, d));
+}
+
 #endif //STEREO_READER_PROCESSINGTEST_H

@@ -66,6 +66,12 @@ double processing::compute_angle(cv::Point point, cv::Point center) {
     }
 }
 
+bool processing::validate_image_pair(ImageData &first, ImageData &second) {
+    return first.streamer_clicks.size() == second.streamer_clicks.size() &&
+            get_prefix(first.image_path) == get_prefix(second.image_path);
+}
+
+
 std::vector<Correlation>
 processing::compute_correlations(std::vector<std::pair<ImageData, ImageData>> &data_table) {
     vector<Correlation> correlations;

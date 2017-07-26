@@ -27,6 +27,8 @@ namespace processing {
 
     std::vector<Correlation>
     compute_correlations(std::vector<std::pair<ImageData, ImageData>> &data_table);
+
+    bool validate_image_pair(ImageData &first, ImageData &second);
 };
 
 
