@@ -39,7 +39,7 @@ TEST(processing, isObserved) {
     EXPECT_FALSE(processing::isObserved("/dir/asdf_22-s.jpg"));
 }
 
-TEST(processing, processing_isSimulated_Test) {
+TEST(processing, isSimulated) {
     EXPECT_TRUE(processing::isSimulated("helo-s.jpg"));
     EXPECT_TRUE(processing::isSimulated("dir/helo-s.jpg"));
     EXPECT_TRUE(processing::isSimulated("/dir/asdf_22-s.jpg"));
@@ -47,6 +47,23 @@ TEST(processing, processing_isSimulated_Test) {
     EXPECT_FALSE(processing::isSimulated("helo-o.jpg"));
     EXPECT_FALSE(processing::isSimulated("dir/helo-o.jpg"));
     EXPECT_FALSE(processing::isSimulated("/dir/asdf_22-o.jpg"));
+}
+
+TEST(processing, computeAngle) {
+    cv::Point center{256, 256};
+
+    // Edge cases
+    EXPECT_DOUBLE_EQ(processing::compute_angle(cv::Point{12, 256}, center), 0);
+    EXPECT_DOUBLE_EQ(processing::compute_angle(cv::Point{300, 256}, center), 0);
+    EXPECT_DOUBLE_EQ(processing::compute_angle(cv::Point{256, 200}, center), M_PI / 2);
+    EXPECT_DOUBLE_EQ(processing::compute_angle(cv::Point{256, 400}, center), -M_PI / 2);
+
+    // 45 degree cases
+    EXPECT_DOUBLE_EQ(processing::compute_angle(cv::Point{128, 128}, center), M_PI / 4);
+    EXPECT_DOUBLE_EQ(processing::compute_angle(cv::Point{384, 128}, center), M_PI / 4);
+
+    EXPECT_DOUBLE_EQ(processing::compute_angle(cv::Point{128, 384}, center), -M_PI / 4);
+    EXPECT_DOUBLE_EQ(processing::compute_angle(cv::Point{384, 384}, center), -M_PI / 4);
 }
 
 
