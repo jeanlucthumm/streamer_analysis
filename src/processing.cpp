@@ -45,9 +45,18 @@ bool processing::isSimulated(const boost::filesystem::path &name) {
 double processing::compute_angle(cv::Point point, cv::Point center) {
     double deltaX = point.x - center.x; // keep in mind openCV has 0,0 at top left
     double deltaY = point.y - center.y;
-    if (deltaX == 0) return 0; // don't want to break math
-    double arc = abs(atan(deltaY / deltaX));
 
+    if (deltaX == 0) {
+        if (deltaY < 0) {
+            return M_PI / 2;
+        } else if (deltaY > 0) {
+            return -M_PI / 2;
+        } else {
+            return 0;
+        }
+    }
+
+    double arc = abs(atan(deltaY / deltaX));
     if (deltaY < 0) { // above origin
         return arc;
     } else if (deltaY > 0) {
