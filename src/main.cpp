@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Prompter.h"
 #include "processing.h"
+#include "PairList.h"
 
 using namespace std;
 using namespace boost::filesystem;
@@ -53,6 +54,7 @@ int main(int argc, char **argv) {
         cerr << error.what() << endl;
         return EXIT_FAILURE;
     }
+    PairList pair_list{entries}; // extract pairs
 
     // open output file
     std::ofstream file{argv[2]};
@@ -61,18 +63,13 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    // get image pairs
     Prompter prompter;
     vector<pair<ImageData, ImageData>> image_pairs;
-    for (auto &entry : entries) {
+    for (auto &pair : pair_list) {
         try {
-            path first = entry.path();
-            path second = processing::get_pair(first);
-
             while (true) {
-                auto result = prompter.prompt_double(first, second);
+                auto result = prompter.prompt_double(pair.first, pair.second);
                 if (processing::validate_image_pair(result.first, result.second)) {
-                    print_data_pair(result); // DEBUG
                     image_pairs.push_back(result);
                     break;
                 }

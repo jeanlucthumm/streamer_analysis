@@ -6,11 +6,13 @@
 #define STEREO_READER_PAIRLIST_H
 
 #include <vector>
-#include <boost/filesystem/path.hpp>
+#include <boost/filesystem.hpp>
 
 class PairList {
 public:
-    PairList(const std::vector<boost::filesystem::path> &path_list);
+    PairList(const std::vector<boost::filesystem::path> path_list);
+
+    PairList(const std::vector<boost::filesystem::directory_entry> &dir_list);
 
     std::vector<std::pair<boost::filesystem::path, boost::filesystem::path>>::iterator
     begin();
@@ -20,8 +22,9 @@ public:
 
 private:
     std::vector<std::pair<boost::filesystem::path, boost::filesystem::path>> pair_list;
-};
 
+    void populate_list(const std::vector<boost::filesystem::path> &path_list);
+};
 
 
 #endif //STEREO_READER_PAIRLIST_H
