@@ -13,6 +13,16 @@
 
 class Prompter {
 public:
+    /**
+     * Prompts user with a pair of images closer inspection. The order of clicks on
+     * each image determines which streamers are correlated, i.e. first click
+     * on image A is correlated to first click on image B. Clicks can be made all at
+     * once for each image, or by rotating through all the images.
+     * @param image1_path path to first image
+     * @param image2_path path to second image
+     * @return a pair of data where the first entry corresponds to image1_path, and second
+     * to image2_path
+     */
     std::pair<ImageData, ImageData>
     prompt_double(const boost::filesystem::path &image1_path,
                   const boost::filesystem::path &image2_path);

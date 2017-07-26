@@ -6,6 +6,27 @@
 using namespace std;
 using namespace boost::filesystem;
 
+static void print_data_pair(pair<ImageData, ImageData> &entry) {
+    vector<double> angles1, angles2;
+    for (auto &point : entry.first.streamer_clicks) {
+        angles1.push_back(processing::compute_angle(point, entry.first.center));
+    }
+    for (auto &point : entry.second.streamer_clicks) {
+        angles2.push_back(processing::compute_angle(point, entry.second.center));
+    }
+
+    cout << "First angles: ";
+    for (double angle : angles1) {
+        cout << angle << " ";
+    }
+    cout << endl;
+    cout << "Second angles: ";
+    for (double angle: angles2) {
+        cout << angle << " ";
+    }
+    cout << endl;
+}
+
 vector<directory_entry> get_entries(string name) {
     path data_path{name};
 
@@ -44,7 +65,8 @@ int main(int argc, char **argv) {
     for (auto &entry : entries) {
         try {
 //            prompter.prompt(entry.path());
-            prompter.prompt_double(entry.path(), processing::get_pair(entry.path()));
+            auto res = prompter.prompt_double(entry.path(), processing::get_pair(entry.path()));
+            print_data_pair(res);
         } catch (runtime_error &error) {
             cerr << error.what() << endl;
         }
