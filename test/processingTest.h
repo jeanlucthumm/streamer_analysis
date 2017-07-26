@@ -66,5 +66,4 @@ TEST(processing, computeAngle) {
     EXPECT_DOUBLE_EQ(processing::compute_angle(cv::Point{384, 384}, center), -M_PI / 4);
 }
 
-
 #endif //STEREO_READER_PROCESSINGTEST_H

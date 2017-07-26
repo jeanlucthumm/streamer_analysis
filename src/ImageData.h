@@ -17,6 +17,14 @@ public:
     cv::Mat matrix;
     cv::Point center;
     std::vector<cv::Point> streamer_clicks;
+    
+    bool operator==(const ImageData &other) {
+        return image_path == other.image_path;
+    }
+    
+    bool operator!=(const ImageData &other) {
+        return !(*this == other);
+    }
 };
 
 
