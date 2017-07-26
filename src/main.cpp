@@ -6,34 +6,39 @@
 using namespace std;
 using namespace boost::filesystem;
 
+vector<directory_entry> get_entries(string name) {
+    path data_path{name};
+
+    // validate directory
+    if (!exists(data_path) || !is_directory(data_path)) {
+        throw runtime_error("invalid data path: " + data_path.string());
+    }
+
+    directory_iterator begin{data_path}, end;
+    return vector<directory_entry>{begin, end};
+}
+
 int main(int argc, char **argv) {
     if (argc != 3) {
         cout << "USAGE: stereo-reader data_dir csv_output_file" << endl;
         return EXIT_FAILURE;
     }
 
-    path data_path{argv[1]};
-
-    // validate directory
+    // get file list
+    vector<directory_entry> entries;
     try {
-        if (!exists(data_path) || !is_directory(data_path)) {
-            cout << "invalid data path: " << data_path << endl;
-            return EXIT_FAILURE;
-        }
-    } catch (filesystem_error &error) {
+        entries = get_entries(argv[1]);
+    } catch (runtime_error &error) {
         cerr << error.what() << endl;
         return EXIT_FAILURE;
     }
 
+    // open output file
     std::ofstream file{argv[2]};
     if (!file.is_open()) {
-        cout << "could not create output file" << endl;
+        cerr << "could not create output file" << endl;
         return EXIT_FAILURE;
     }
-
-    directory_iterator begin{data_path}, end;
-    vector<directory_entry> entries{begin, end};
-    random_shuffle(entries.begin(), entries.end()); // randomize to eliminate bias
 
     Prompter prompter;
     for (auto &entry : entries) {

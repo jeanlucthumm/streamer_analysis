@@ -30,7 +30,9 @@ private:
 
     std::map<std::string, std::vector<double>> table;
 
-    ImageData current_image_data;
+    ImageData current_image;
+
+    std::pair<ImageData, ImageData> current_image_pair;
 };
 
 class image_error : public std::runtime_error {

@@ -113,8 +113,11 @@ Prompter::prompt_double(const boost::filesystem::path &image1_path,
     data2.window_title = (isSimulated2) ? "Simulated" : "Observed";
 
     namedWindow(data1.window_title);
+    namedWindow(data2.window_title);
     setMouseCallback(data1.window_title, mouse_callback, &data1);
     setMouseCallback(data2.window_title, mouse_callback, &data2);
+    imshow(data1.window_title, data1.matrix);
+    imshow(data2.window_title, data2.matrix);
 
     while((char) waitKey(0) != ' ') {} // wait for user to add a few lines
 
