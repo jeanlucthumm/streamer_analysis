@@ -36,41 +36,6 @@ void mouse_callback(int event, int x, int y, int flag, void *param) {
     }
 }
 
-ImageData Prompter::prompt(const boost::filesystem::path &image_path) {
-    Mat image = imread(image_path.string());
-
-    if (image.empty()) {
-        throw image_error::def(image_path.string());
-    }
-
-    Point center = calculate_center(image, false);
-    if (center.x < 0) {
-        throw processing_error::center(image_path.string());
-    }
-
-    circle(image, center, 3, Scalar(0, 255, 0), -1); // display dot at center
-
-    ImageData data;
-    data.image_path = image_path;
-    data.matrix = image;
-    data.center = center;
-    data.window_title = "Prompt";
-
-    namedWindow(data.window_title);
-    setMouseCallback(data.window_title, mouse_callback, &data);
-    imshow(data.window_title, image);
-
-    while ((char) waitKey(0) != ' ') {} // wait for user to add a few lines
-
-    return data;
-
-    // record all angles
-//    for (auto &point : current_image_data.streamer_clicks) {
-//        double angle = calculate_angle(point, current_image_data.center);
-//        table[image_path.filename().string()].push_back(angle);
-//    }
-}
-
 std::pair<ImageData, ImageData>
 Prompter::prompt_double(const boost::filesystem::path &image1_path,
                         const boost::filesystem::path &image2_path) {
