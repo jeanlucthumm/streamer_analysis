@@ -16,7 +16,7 @@ set(SOURCES
         src/Prompter.h src/Prompter.cpp
         src/ImageData.h
         src/processing.h src/processing.cpp
-        src/Correlation.h)
+        src/Correlation.h src/PairList.cpp src/PairList.h)
 
 add_executable(stereo_reader src/main.cpp ${SOURCES})
 target_link_libraries(stereo_reader ${OpenCV_LIBS} ${Boost_LIBRARIES})
