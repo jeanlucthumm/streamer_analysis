@@ -16,7 +16,7 @@ exceptionally clear streamers.
 #### Analysis Files
 These files contain analysis done on the data set, and can be found in the `analysis` subdirectory.
 - The difference between streamers (**diff**) is calculated as `simulated - observed`
-- Angles are in radians and are calculated from the closes horizontal axis up
+- Angles are in radians and are calculated from the closest horizontal axis up
 - Suffix `_angle_diff` indicates that this file holds both the angles of correlated streamers, 
 and the differences between them.
 - Suffix `_angle` indicates that this file holds only the angles of correlated streamers
