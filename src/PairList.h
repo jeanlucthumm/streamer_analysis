@@ -23,7 +23,7 @@ public:
 private:
     std::vector<std::pair<boost::filesystem::path, boost::filesystem::path>> pair_list;
 
-    void populate_list(const std::vector<boost::filesystem::path> &path_list);
+    void populate_list(std::vector<boost::filesystem::path> &path_list);
 };
 
 

@@ -14,7 +14,8 @@ using boost::filesystem::path;
 using boost::filesystem::directory_entry;
 
 PairList::PairList(const std::vector<boost::filesystem::path> path_list) {
-    populate_list(path_list);
+    vector<path> paths{path_list.begin(), path_list.end()};
+    populate_list(paths);
 }
 
 PairList::PairList(const std::vector<boost::filesystem::directory_entry> &dir_list) {
@@ -34,7 +35,7 @@ std::vector<std::pair<boost::filesystem::path, boost::filesystem::path>>::iterat
     return pair_list.end();
 }
 
-void PairList::populate_list(const std::vector<boost::filesystem::path> &path_list) {
+void PairList::populate_list(std::vector<boost::filesystem::path> &path_list) {
     sort(path_list.begin(), path_list.end());
 
     auto itr = path_list.begin();
