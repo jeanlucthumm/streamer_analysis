@@ -1,3 +1,6 @@
+**The following is outdated. Currently, only `diff_stats.py` is used**
+
+
 **process_correlations.py** is the script used to output the `correlations.csv` file. It reads in an angle file
 and tries to find correlated streamers, for which it computes the delta or difference (simulated - observed). Usage
 is as follows:
