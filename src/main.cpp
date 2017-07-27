@@ -1,7 +1,9 @@
 #include <boost/filesystem.hpp>
 #include <iostream>
+#include <fstream>
 #include "Prompter.h"
 #include "processing.h"
+#include "writing.h"
 #include "PairList.h"
 
 using namespace std;
@@ -56,13 +58,35 @@ int main(int argc, char **argv) {
     }
     PairList pair_list{entries}; // extract pairs
 
-    // open output file
-    std::ofstream file{argv[2]};
-    if (!file.is_open()) {
-        cerr << "could not create output file" << endl;
+    // open output files
+    path base_path{argv[2]};
+    path base_extension = base_path.extension().string();
+    path base_name = base_path.filename().string();
+    base_path.remove_filename();
+    base_path /= base_name;
+
+    path angle_diff_path{base_path};
+    path angle_path{base_path};
+    path diff_path{base_path};
+
+    angle_diff_path += "_angle_diff";
+    angle_path += "_angle";
+    diff_path += "_diff";
+
+    angle_diff_path += base_extension;
+    angle_path += base_extension;
+    diff_path += base_extension;
+
+    std::ofstream angle_diff_file{angle_diff_path.string()};
+    std::ofstream angle_file{angle_path.string()};
+    std::ofstream diff_file{diff_path.string()};
+
+    if (!angle_diff_file.is_open() || !angle_file.is_open() || !diff_file.is_open()) {
+        cerr << "Could not open output files" << endl;
         return EXIT_FAILURE;
     }
 
+    // prompt user
     Prompter prompter;
     vector<pair<ImageData, ImageData>> image_pairs;
     for (auto &pair : pair_list) {
@@ -82,28 +106,18 @@ int main(int argc, char **argv) {
     }
 
     // get correlations by processing image pairs
+    vector<Correlation> correlations;
     try {
-        vector<Correlation> correlations = processing::compute_correlations(image_pairs);
+        correlations = processing::compute_correlations(image_pairs);
     } catch (runtime_error &error) {
         cerr << error.what() << endl;
         return EXIT_FAILURE;
     }
 
-    return 0;
-
-    // write csv file
-    file << "file name,angle1,angle2,..." << endl;
-
-    auto &table = prompter.get_table();
-    for (auto &entry : table) {
-        file << entry.first;
-        for (double angle : entry.second) {
-            file << "," << angle;
-        }
-        file << endl;
-    }
-
-    file.close();
+    // write to files
+    writing::write_angle_diff(angle_diff_file, correlations);
+    writing::write_angle(angle_file, correlations);
+    writing::write_diff(diff_file, correlations);
 
     return EXIT_SUCCESS;
 }
