@@ -1,6 +1,5 @@
 #include <boost/filesystem.hpp>
 #include <iostream>
-#include <fstream>
 #include "Prompter.h"
 #include "processing.h"
 #include "writing.h"
@@ -60,22 +59,10 @@ int main(int argc, char **argv) {
 
     // open output files
     path base_path{argv[2]};
-    path base_extension = base_path.extension().string();
-    path base_name = base_path.filename().string();
-    base_path.remove_filename();
-    base_path /= base_name;
 
-    path angle_diff_path{base_path};
-    path angle_path{base_path};
-    path diff_path{base_path};
-
-    angle_diff_path += "_angle_diff";
-    angle_path += "_angle";
-    diff_path += "_diff";
-
-    angle_diff_path += base_extension;
-    angle_path += base_extension;
-    diff_path += base_extension;
+    path angle_diff_path = processing::add_suffix(base_path, "_angle_diff");
+    path angle_path = processing::add_suffix(base_path, "_angle");
+    path diff_path = processing::add_suffix(base_path, "_diff");
 
     std::ofstream angle_diff_file{angle_diff_path.string()};
     std::ofstream angle_file{angle_path.string()};

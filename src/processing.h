@@ -19,6 +19,8 @@ namespace processing {
 
     std::string get_prefix(const boost::filesystem::path &name);
 
+    boost::filesystem::path add_suffix(const boost::filesystem::path &name, std::string suffix);
+
     bool isObserved(const boost::filesystem::path &name);
 
     bool isSimulated(const boost::filesystem::path &name);

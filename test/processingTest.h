@@ -82,4 +82,8 @@ TEST(processing, validate_image_pair) {
     EXPECT_FALSE(processing::validate_image_pair(a, d));
 }
 
+TEST(processing, add_suffix) {
+    EXPECT_EQ(processing::add_suffix("data/test.csv", "_diff"), "data/test_diff.csv");
+}
+
 #endif //STEREO_READER_PROCESSINGTEST_H

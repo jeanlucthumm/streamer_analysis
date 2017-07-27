@@ -34,6 +34,16 @@ std::string processing::get_prefix(const boost::filesystem::path &name) {
     return parts[0];
 }
 
+boost::filesystem::path processing::add_suffix(const boost::filesystem::path &name,
+                                               std::string suffix) {
+    path base = name;
+    base.remove_filename();
+    base /= name.stem();
+    base += suffix;
+    base += name.extension();
+    return base;
+}
+
 bool processing::isObserved(const boost::filesystem::path &name) {
     return boost::contains(name.stem().string(), OBS);
 }
@@ -68,7 +78,7 @@ double processing::compute_angle(cv::Point point, cv::Point center) {
 
 bool processing::validate_image_pair(ImageData &first, ImageData &second) {
     return first.streamer_clicks.size() == second.streamer_clicks.size() &&
-            get_prefix(first.image_path) == get_prefix(second.image_path);
+           get_prefix(first.image_path) == get_prefix(second.image_path);
 }
 
 
