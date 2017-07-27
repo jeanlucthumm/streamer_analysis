@@ -13,8 +13,11 @@ exceptionally clear streamers.
 - `prefix_lookup.csv` can be used to find the date, time, and carrington rotation of each prefix
 
 
-#### Additional files
-- `streamer-angles.csv` contains all the identified angles in each file.
-  Angles are in radians and are measured from the left horizontal axis up
-- `correlation.csv` contains the difference in angle between correlated streamers **(simulated - observed)**
-- `stats.txt` contains statistics on the values found in `correlation.csv`
+#### Analysis Files
+These files contain analysis done on the data set, and can be found in the `analysis` subdirectory.
+- Suffix `_angle_diff` indicates that this file holds both the angles of correlated streamers, 
+and the differences between them.
+- Suffix `_angle` indicates that this file holds only the angles of correlated streamers
+- Suffix `_diff` indicates that this file holds only the differences between correlated streamers
+- The header of each file explains its layout
+- `stats.txt` holds statistics on the differences between streamers
