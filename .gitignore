@@ -66,9 +66,3 @@ cmake-build-debug
 cmake-build-release
 data/gif
 data/testing
-*.csv
-!**/streamer_angles.csv
-!**/correlation.csv
-!**/prefix_lookup.csv
-
-
