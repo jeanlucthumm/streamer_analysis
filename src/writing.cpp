@@ -8,7 +8,7 @@
 using namespace std;
 
 void writing::write_angle_diff(std::ofstream &out, const std::vector<Correlation> &data) {
-    out << "prefix, simluated angle, observed angle, diff, ..." << endl;
+    out << "prefix, simulated angle, observed angle, diff, ..." << endl;
 
     // sort correlations by prefix
     map<string, vector<Correlation>> table;
