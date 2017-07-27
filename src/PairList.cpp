@@ -40,11 +40,16 @@ void PairList::populate_list(std::vector<boost::filesystem::path> &path_list) {
 
     auto itr = path_list.begin();
     while (itr + 1 < path_list.end()) {
-        if (get_pair(*itr) == *(itr + 1)) {
-            pair_list.push_back(make_pair(*itr, *(itr + 1)));
-            itr += 2;
-        } else {
-            cerr << "could not find pair path for: " << itr->string() << endl;
+        try {
+            if (get_pair(*itr) == *(itr + 1)) {
+                pair_list.push_back(make_pair(*itr, *(itr + 1)));
+                itr += 2;
+            } else {
+                cerr << "could not find pair path for: " << itr->string() << endl;
+                itr++;
+            }
+        } catch (runtime_error &error) {
+            cerr << error.what() << endl;
             itr++;
         }
     }
