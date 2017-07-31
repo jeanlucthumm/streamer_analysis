@@ -41,24 +41,20 @@ vector<directory_entry> get_entries(string name) {
     return vector<directory_entry>{begin, end};
 }
 
-int main(int argc, char **argv) {
-    if (argc != 3) {
-        cout << "USAGE: stereo-reader data_dir csv_output_file" << endl;
-        return EXIT_FAILURE;
-    }
-
+static bool prompt_operation(string data_dir, string output_file) {
     // get file list
     vector<directory_entry> entries;
     try {
-        entries = get_entries(argv[1]);
+        entries = get_entries(data_dir);
     } catch (runtime_error &error) {
         cerr << error.what() << endl;
-        return EXIT_FAILURE;
+        return false;
     }
     PairList pair_list{entries}; // extract pairs
 
     // open output files
-    path base_path{argv[2]};
+    path base_path{output_file};
+
 
     path angle_diff_path = processing::add_suffix(base_path, "_angle_diff");
     path angle_path = processing::add_suffix(base_path, "_angle");
@@ -70,7 +66,7 @@ int main(int argc, char **argv) {
 
     if (!angle_diff_file.is_open() || !angle_file.is_open() || !diff_file.is_open()) {
         cerr << "Could not open output files" << endl;
-        return EXIT_FAILURE;
+        return false;
     }
 
     // prompt user
@@ -98,7 +94,7 @@ int main(int argc, char **argv) {
         correlations = processing::compute_correlations(image_pairs);
     } catch (runtime_error &error) {
         cerr << error.what() << endl;
-        return EXIT_FAILURE;
+        return false;
     }
 
     // write to files
@@ -106,5 +102,9 @@ int main(int argc, char **argv) {
     writing::write_angle(angle_file, correlations);
     writing::write_diff(diff_file, correlations);
 
-    return EXIT_SUCCESS;
+    return true;
+}
+
+int main(int argc, char **argv) {
+    // TODO
 }
