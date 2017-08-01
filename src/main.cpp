@@ -5,6 +5,8 @@
 #include "writing.h"
 #include "PairList.h"
 
+#define USAGE "streamer_analysis [-d data_dir | -v] -f "
+
 using namespace std;
 using namespace boost::filesystem;
 
@@ -106,5 +108,13 @@ static bool prompt_operation(string data_dir, string output_file) {
 }
 
 int main(int argc, char **argv) {
-    // TODO
+    if (argc == 3) {
+        string data_dir = argv[1];
+        string output_path = argv[2];
+        bool retval = prompt_operation(data_dir, output_path);
+        return (retval) ? EXIT_SUCCESS : EXIT_FAILURE;
+    } else {
+        cout << USAGE << endl;
+        return EXIT_FAILURE;
+    }
 }
